@@ -3,30 +3,23 @@ import { useParams } from 'react-router-dom';
 
 const UserDetails = () => {
   const { id } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    setIsLoading(true);
+    setLoading(true);
     fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-      .then(response => response.json())
+      .then(res => res.json())
       .then(data => {
         setUserData(data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error("Error fetching user details:", error);
-        setIsLoading(false);
+        setLoading(false);
       });
   }, [id]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
-      <h1>User Details</h1>
       <p>Name: {userData.name}</p>
       <p>Username: {userData.username}</p>
       <p>Email: {userData.email}</p>

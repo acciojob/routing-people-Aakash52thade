@@ -3,21 +3,26 @@ import { Link } from 'react-router-dom';
 
 const UserList = () => {
   const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
-      .then(response => response.json())
-      .then(data => setUserData(data))
-      .catch(error => console.error("Error fetching users:", error));
+      .then(res => res.json())
+      .then(data => {
+        setUserData(data);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
       <h1>User List</h1>
       <ul>
-        {userData.map((user) => (
+        {userData.map(user => (
           <li key={user.id}>
-            <Link to={`/users/${user.id}`}>{user.name}</Link>
+            <a href={`/users/${user.id}`}>{user.name}</a>
           </li>
         ))}
       </ul>
